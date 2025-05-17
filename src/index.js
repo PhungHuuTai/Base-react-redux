@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import User from './components/User/user';
 import Admin from './components/Admin/admin';
+import HomePage from './components/Home/HomePage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,6 +17,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
+          <Route index element={<HomePage />} />
           <Route path="/users" element={<User />} />
           <Route path="/admins" element={<Admin />} />
         </Route>
