@@ -7,14 +7,78 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media (min-width: 1200px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl {
+    max-width: 1200px !important;
+  }
+}
+
 .app-container {
   .header-container {
-    .navbar-nav {
+    .navbar {
+      padding-top: 20px;
       z-index: 10;
-      opacity: 0.6;
+      background-color: rgba(0, 0, 0, 0) !important;
+
       .nav-link {
         &.active {
           color: #00bfff;
+        }
+      }
+
+      .btn-login {
+        border-radius: 5px;
+        border: 1px solid #535353;
+        margin-right: 15px;
+        padding: 0 15px;
+        height: 40px;
+      }
+
+      .btn-signup {
+        border-radius: 5px;
+        border: 1px solid #535353;
+        padding: 0 15px;
+        background-color: #303030;
+        color: white;
+        height: 40px;
+
+        &:hover {
+          background-color: black;
+        }
+      }
+    }
+  }
+  
+  .homepage-container {
+    .homepage-content {
+      padding: 80px;
+      width: 50%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      
+      .title-1 {
+        font-size: 30px;
+        font-weight: 600;
+      }
+
+      .title-2 {
+        font-size: 20px;
+      }
+
+      .title-3 {
+        button {
+          border-radius: 5px;
+          border: 1px solid #535353;
+          padding: 0 15px;
+          background-color: #303030;
+          color: white;
+          height: 40px;
+
+          &:hover {
+            background-color: black;
+          }
         }
       }
     }
