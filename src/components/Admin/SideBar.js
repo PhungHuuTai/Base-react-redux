@@ -9,7 +9,10 @@ import {
   SidebarContent,
 } from 'react-pro-sidebar';
 import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart } from 'react-icons/fa';
+import { DiReact } from 'react-icons/di';
+import { MdDashboard } from 'react-icons/md';
 import sidebarBg from '../../assets/image/bg2.jpg';
+import './SideBar.scss';
 
 const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
     return (
@@ -34,28 +37,27 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
                             whiteSpace: 'nowrap',
                         }}
                     >
-                        Phung Huu Tai
+                        <DiReact size={'3em'} color={"00bfff"}/>
+                        <span>Phung Huu Tai</span>
                     </div>
                 </SidebarHeader>
 
                 <SidebarContent>
                     <Menu iconShape="circle">
                         <MenuItem
-                            icon={<FaTachometerAlt />}
-                            suffix={<span className="badge red">New</span>}
+                            icon={<MdDashboard />}
                         >
                             Dashboard
                         </MenuItem>
-                        <MenuItem icon={<FaGem />}> Components</MenuItem>
                     </Menu>
                     <Menu iconShape="circle">
                         <SubMenu
-                            suffix={<span className="badge yellow">3</span>}
-                            icon={<FaRegLaughWink />}
+                            icon={<FaGem />}
+                            title="Features"
                         >
-                            <MenuItem>1</MenuItem>
-                            <MenuItem>2</MenuItem>
-                            <MenuItem>3</MenuItem>
+                            <MenuItem>Users management</MenuItem>
+                            <MenuItem>Quiz management</MenuItem>
+                            <MenuItem>Question management</MenuItem>
                         </SubMenu>
                     </Menu>
                 </SidebarContent>
@@ -68,7 +70,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
                         }}
                     >
                         <a
-                            href="https://github.com/azouaoui-med/react-pro-sidebar"
+                            href="https://github.com/PhungHuuTai/Base-react-redux"
                             target="_blank"
                             className="sidebar-btn"
                             rel="noopener noreferrer"
