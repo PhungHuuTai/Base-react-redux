@@ -1,18 +1,19 @@
 import 'react-pro-sidebar/dist/css/styles.css';
 import {
-  ProSidebar,
-  Menu,
-  MenuItem,
-  SubMenu,
-  SidebarHeader,
-  SidebarFooter,
-  SidebarContent,
+    ProSidebar,
+    Menu,
+    MenuItem,
+    SubMenu,
+    SidebarHeader,
+    SidebarFooter,
+    SidebarContent,
 } from 'react-pro-sidebar';
 import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart } from 'react-icons/fa';
 import { DiReact } from 'react-icons/di';
 import { MdDashboard } from 'react-icons/md';
 import sidebarBg from '../../assets/image/bg2.jpg';
 import './SideBar.scss';
+import { Link } from 'react-router-dom';
 
 const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
     return (
@@ -37,7 +38,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
                             whiteSpace: 'nowrap',
                         }}
                     >
-                        <DiReact size={'3em'} color={"00bfff"}/>
+                        <DiReact size={'3em'} color={"00bfff"} />
                         <span>Phung Huu Tai</span>
                     </div>
                 </SidebarHeader>
@@ -48,6 +49,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
                             icon={<MdDashboard />}
                         >
                             Dashboard
+                            <Link to="/admins" />
                         </MenuItem>
                     </Menu>
                     <Menu iconShape="circle">
@@ -55,7 +57,10 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
                             icon={<FaGem />}
                             title="Features"
                         >
-                            <MenuItem>Users management</MenuItem>
+                            <MenuItem>
+                                Users management
+                                <Link to="/admins/manage-users" />
+                            </MenuItem>
                             <MenuItem>Quiz management</MenuItem>
                             <MenuItem>Question management</MenuItem>
                         </SubMenu>
