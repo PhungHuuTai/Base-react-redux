@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { FcPlus, FcPrevious } from 'react-icons/fc';
+import { FcPlus } from 'react-icons/fc';
 import { toast } from 'react-toastify';
 import { putUpdateUser } from '../../../services/apiService';
 import _ from 'lodash';
