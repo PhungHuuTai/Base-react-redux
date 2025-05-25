@@ -1,6 +1,6 @@
 
 
-const TableUser = ({ listUsers, handleClickBtnUpdate, handleClickBtnView }) => {
+const TableUser = ({ listUsers, handleClickBtnUpdate, handleClickBtnView, handleClickBtnDelete }) => {
 
     return (
         <>
@@ -37,7 +37,12 @@ const TableUser = ({ listUsers, handleClickBtnUpdate, handleClickBtnView }) => {
                                         >
                                             Update
                                         </button>
-                                        <button className="btn btn-danger">Delete</button>
+                                        <button
+                                            className="btn btn-danger"
+                                            onClick={() => handleClickBtnDelete(item)}
+                                        >
+                                            Delete
+                                        </button>
                                     </td>
                                 </tr>
                             )
