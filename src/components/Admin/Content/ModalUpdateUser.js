@@ -3,10 +3,10 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FcPlus, FcPrevious } from 'react-icons/fc';
 import { toast } from 'react-toastify';
-import { postCreateNewUser } from '../../../services/apiService';
+import { putUpdateUser } from '../../../services/apiService';
 import _ from 'lodash';
 
-const ModalUpdateUser = ({ show, setShow, dataUpdate }) => {
+const ModalUpdateUser = ({ show, setShow, dataUpdate, fetchListUsers, resetUpdateData }) => {
 
     const handleClose = () => {
         setShow(false);
@@ -16,6 +16,7 @@ const ModalUpdateUser = ({ show, setShow, dataUpdate }) => {
         setRole("USER");
         setImage("");
         setPreviewImage("");
+        resetUpdateData();
     }
 
     const [email, setEmail] = useState("");
@@ -30,6 +31,7 @@ const ModalUpdateUser = ({ show, setShow, dataUpdate }) => {
             setEmail(dataUpdate.email);
             setUsername(dataUpdate.username);
             setRole(dataUpdate.role);
+            setImage("");
             if (dataUpdate.image) {
                 setPreviewImage(`data:image/jpeg;base64,${dataUpdate.image}`)
             };
@@ -43,33 +45,14 @@ const ModalUpdateUser = ({ show, setShow, dataUpdate }) => {
         }
     }
 
-    const validateEmail = (email) => {
-        return String(email)
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-            );
-    };
-
-    const handleSubmitCreateUser = async () => {
-        //validate
-        const isValidEmail = validateEmail(email);
-        if (!isValidEmail) {
-            toast.error("Invalid Email!");
-            return;
-        }
-
-        if (!password) {
-            toast.error("Invalid Password!");
-            return;
-        }
+    const handleSubmitUpdateUser = async () => { 
         //call API
-        let data = await postCreateNewUser(email, password, username, role, image);
+        let data = await putUpdateUser(dataUpdate.id, username, role, image);
 
         if (data && data.EC === 0) {
             toast.success(data.EM);
             handleClose();
-            // await fetchListUsers();
+            await fetchListUsers();
         }
 
         if (data && data.EC !== 0) {
@@ -155,7 +138,7 @@ const ModalUpdateUser = ({ show, setShow, dataUpdate }) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => handleSubmitCreateUser()}>
+                    <Button variant="primary" onClick={() => handleSubmitUpdateUser()}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
