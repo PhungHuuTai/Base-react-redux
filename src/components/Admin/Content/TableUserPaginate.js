@@ -1,12 +1,12 @@
 import ReactPaginate from "react-paginate";
 import { useEffect, useState } from "react";
 
-const TableUserPaginate = ({ listUsers, handleClickBtnUpdate, handleClickBtnView, handleClickBtnDelete, fetchListUsersWithPaginate, pageCount }) => {
+const TableUserPaginate = ({ listUsers, handleClickBtnUpdate, handleClickBtnView, handleClickBtnDelete, fetchListUsersWithPaginate, pageCount, setCurPage }) => {
     
 
     const handlePageClick = (event) => {
+        setCurPage(event.selected + 1)
         fetchListUsersWithPaginate(+event.selected + 1)
-        console.log(`User requested page number ${event.selected}`);
     };
 
     return (
