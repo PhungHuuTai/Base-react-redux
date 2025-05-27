@@ -33,4 +33,8 @@ const deleteUser = (id) => {
     });
 }
 
-export { postCreateNewUser, getAllUsers, putUpdateUser, deleteUser }
+const getUserWithPaginate = (page, limit) => {
+    return axios.get(`participant?page=${page}&limit=${limit}`);
+}
+
+export { postCreateNewUser, getAllUsers, putUpdateUser, deleteUser, getUserWithPaginate }
