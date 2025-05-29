@@ -2,7 +2,19 @@
     .login-header {
         height: 45px;
         text-align: right;
-        border: 1px solid red;
+        padding: 5px 100px 0 100px;
+
+        button {
+            border: 1px solid;
+            padding: 3px 15px;
+            margin-left: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+
+            &:hover {
+                background-color: white;
+            }
+        }
     }
 
     .login-title {
@@ -31,6 +43,10 @@
             margin: 20px 0;
             color: white;
             background-color: black;
+        }
+
+        .back {
+            cursor: pointer;
         }
     }
 }
