@@ -1,7 +1,6 @@
 import ReactPaginate from "react-paginate";
-import { useEffect, useState } from "react";
 
-const TableUserPaginate = ({ listUsers, handleClickBtnUpdate, handleClickBtnView, handleClickBtnDelete, fetchListUsersWithPaginate, pageCount, setCurPage }) => {
+const TableUserPaginate = ({ listUsers, handleClickBtnUpdate, handleClickBtnView, handleClickBtnDelete, fetchListUsersWithPaginate, pageCount, curPage, setCurPage }) => {
     
 
     const handlePageClick = (event) => {
@@ -83,6 +82,7 @@ const TableUserPaginate = ({ listUsers, handleClickBtnUpdate, handleClickBtnView
                     containerClassName="pagination"
                     activeClassName="active"
                     renderOnZeroPageCount={null}
+                    forcePage={curPage - 1}
                 />
             </div>
         </>
