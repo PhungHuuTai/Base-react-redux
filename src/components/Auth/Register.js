@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import './Login.scss';
+import './Register.scss';
 import { useNavigate } from 'react-router-dom';
-import { postLogin } from '../../services/apiService';
+import { postRegister } from '../../services/apiService';
 import { toast } from 'react-toastify';
+import { VscEye, VscEyeClosed } from 'react-icons/vsc';
 
-const Login = () => {
+const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const validateEmail = (email) => {
@@ -17,7 +20,7 @@ const Login = () => {
             );
     };
 
-    const handleSubmitLogin = async () => {
+    const handleSubmitRegister = async () => {
         //validate
         const isValidEmail = validateEmail(email);
         if (!isValidEmail) {
@@ -30,11 +33,11 @@ const Login = () => {
             return;
         }
         //submit
-        let data = await postLogin(email, password);
+        let data = await postRegister(email, password, username);
 
         if (data && data.EC === 0) {
             toast.success(data.EM);
-            navigate('/');
+            navigate('/login');
         }
 
         if (data && data.EC !== 0) {
@@ -43,33 +46,41 @@ const Login = () => {
     }
 
     return (
-        <div className="login-container">
-            <div className='login-header'>
-                <span>You don't have an account yet?</span>
-                <button onClick={() => navigate('/register')}>Sign up</button>
+        <div className="register-container">
+            <div className='register-header'>
+                <span>Already have an account?</span>
+                <button onClick={() => navigate('/login')}>Log in</button>
             </div>
-            <div className='login-title col-4 mx-auto'>
+            <div className='register-title col-4 mx-auto'>
                 PHT
             </div>
-            <div className='login-welcome col-4 mx-auto'>
-                Hello, who's this?
+            <div className='register-welcome col-4 mx-auto'>
+                Hello, you need to have an account?
             </div>
-            <div className='login-content col-4 mx-auto'>
+            <div className='register-content col-4 mx-auto'>
                 <div className='form-group'>
-                    <label>Email</label>
+                    <label>Email (*)</label>
                     <input type='email' className='form-control' value={email}
                         onChange={(event) => setEmail(event.target.value)}
                     />
                 </div>
-                <div className='form-group'>
-                    <label>Password</label>
-                    <input type='password' className='form-control' value={password}
+                <div className='form-group pass-group'>
+                    <label>Password (*)</label>
+                    <input type={showPassword ? 'text' : 'password'} className='form-control' value={password}
                         onChange={(event) => setPassword(event.target.value)}
                     />
+                    <span className='icons-eye' onClick={() => setShowPassword(!showPassword)}>
+                        {showPassword ? <VscEye /> : <VscEyeClosed/>}
+                    </span>
                 </div>
-                <span className='forgot-password'>Forgot password?</span>
+                <div className='form-group'>
+                    <label>Username</label>
+                    <input type='text' className='form-control' value={username}
+                        onChange={(event) => setUsername(event.target.value)}
+                    />  
+                </div>
                 <div>
-                    <button className='btn-login' onClick={handleSubmitLogin}>Login</button>
+                    <button className='btn-register' onClick={handleSubmitRegister}>Register</button>
                 </div>
                 <div className='text-center'>
                     <span className='back' onClick={() => navigate('/')}>
@@ -81,4 +92,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default Register;
