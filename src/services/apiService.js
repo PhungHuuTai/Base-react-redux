@@ -40,7 +40,8 @@ const getUserWithPaginate = (page, limit) => {
 const postLogin = (email, password) => {
     return axios.post('login', {
         email: email,
-        password: password
+        password: password,
+        delay: 5000
     })
 }
 
