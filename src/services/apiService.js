@@ -53,4 +53,9 @@ const getQuizByUser = () => {
     return axios.get('quiz-by-participant')
 }
 
-export { postCreateNewUser, getAllUsers, putUpdateUser, deleteUser, getUserWithPaginate, postLogin, postRegister, getQuizByUser }
+const getDataQuiz = (quizId) => {
+    return axios.get(`questions-by-quiz?quizId=${quizId}`);
+}
+
+export { postCreateNewUser, getAllUsers, putUpdateUser, deleteUser,
+    getUserWithPaginate, postLogin, postRegister, getQuizByUser, getDataQuiz }
