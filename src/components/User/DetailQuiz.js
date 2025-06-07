@@ -1,13 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { getDataQuiz } from "../../services/apiService";
 import _ from "lodash";
 import "./DetailQuiz.scss";
+import Question from "./Question";
 
 const DetailQuiz = () => {
     const params = useParams();
     const location = useLocation();
     const quizId = params.id;
+
+    const [dataQuiz, setDataQuiz] = useState([]);
+    const [currQ, setCurrQ] = useState(0);
 
     useEffect(() => {
         fetchQuestions();
@@ -28,12 +32,24 @@ const DetailQuiz = () => {
                             questionDescription = item.description;
                             image = item.image;
                         }
-                        answers.push(item.answers)
+                        answers.push(item.answers);
                     });
-
                     return { questionId: key, questionDescription, image, answers }
                 })
                 .value();
+            setDataQuiz(data);
+        }
+    }
+
+    const handlePrev = () => {
+        if (currQ > 0) {
+            setCurrQ(currQ - 1);
+        }
+    }
+
+    const handleNext = () => {
+        if (currQ < dataQuiz.length - 1) {
+            setCurrQ(currQ + 1);
         }
     }
 
@@ -48,16 +64,24 @@ const DetailQuiz = () => {
                     <img />
                 </div>
                 <div className="q-content">
-                    <div className="question">Question 1: How do you feel?</div>
-                    <div className="answer">
-                        <div className="a-child">A.abc</div>
-                        <div className="a-child">B.abc</div>
-                        <div className="a-child">C.abc</div>
-                    </div>
+                    <Question
+                        data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[currQ] : []}
+                        currQ={currQ}
+                    />
                 </div>
                 <div className="q-footer">
-                    <button className="btn btn-secondary">Prev</button>
-                    <button className="btn btn-primary">Next</button>
+                    <button
+                        className="btn btn-secondary"
+                        onClick={handlePrev}
+                    >
+                        Prev
+                    </button>
+                    <button
+                        className="btn btn-primary"
+                        onClick={handleNext}
+                    >
+                        Next
+                    </button>
                 </div>
             </div>
             <div className="right-content">
