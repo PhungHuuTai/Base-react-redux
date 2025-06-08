@@ -73,7 +73,31 @@ const DetailQuiz = () => {
     }
 
     const handleFinish = () => {
+        console.log('>>> check data quiz before submit: ', dataQuiz)
+        let payload = {
+            quizId: +quizId,
+            answers: []
+        };
+        let answers = [];
+        if (dataQuiz && dataQuiz.length > 0) {
+            dataQuiz.forEach(question => {
+                let questionId = question.questionId;
+                let userAnswerId = [];
 
+                question.answers.forEach(answer => {
+                    if (answer.isSelected) {
+                        userAnswerId.push(answer.id)
+                    }
+                })
+                
+                answers.push({
+                    questionId: +questionId,
+                    userAnswerId: userAnswerId
+                })
+            })
+            payload.answers = answers;
+            console.log("final payload: ", payload)
+        }
     }
 
     return (
