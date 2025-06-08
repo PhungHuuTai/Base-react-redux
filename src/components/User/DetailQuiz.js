@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { getDataQuiz } from "../../services/apiService";
+import { getDataQuiz, postSubmitQuiz } from "../../services/apiService";
 import _ from "lodash";
 import "./DetailQuiz.scss";
 import Question from "./Question";
+import ModalResult from "./ModalResult";
 
 const DetailQuiz = () => {
     const params = useParams();
     const location = useLocation();
     const quizId = params.id;
+    const [showModalResult, setShowModalResult] = useState(false);
+    const [dataModal, setDataModal] = useState({});
 
     const [dataQuiz, setDataQuiz] = useState([]);
     const [currQ, setCurrQ] = useState(0);
@@ -72,7 +75,7 @@ const DetailQuiz = () => {
         }
     }
 
-    const handleFinish = () => {
+    const handleFinish = async () => {
         console.log('>>> check data quiz before submit: ', dataQuiz)
         let payload = {
             quizId: +quizId,
@@ -89,14 +92,25 @@ const DetailQuiz = () => {
                         userAnswerId.push(answer.id)
                     }
                 })
-                
+
                 answers.push({
                     questionId: +questionId,
                     userAnswerId: userAnswerId
                 })
             })
             payload.answers = answers;
-            console.log("final payload: ", payload)
+            //submit api
+            let res = await postSubmitQuiz(payload);
+            if (res && res.EC === 0) {
+                setDataModal({
+                    countCorrect: res.DT.countCorrect,
+                    countTotal: res.DT.countTotal,
+                    quizData: res.DT.quizData
+                })
+                setShowModalResult(true);
+            } else {
+                alert('something wrongs...');
+            }
         }
     }
 
@@ -141,6 +155,11 @@ const DetailQuiz = () => {
             <div className="right-content">
                 Count Down
             </div>
+            <ModalResult
+                show={showModalResult}
+                setShow={setShowModalResult}
+                dataModal={dataModal}
+            />
         </div>
     )
 }
