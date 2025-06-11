@@ -13,9 +13,11 @@ import { DiReact } from 'react-icons/di';
 import { MdDashboard } from 'react-icons/md';
 import sidebarBg from '../../assets/image/bg2.jpg';
 import './SideBar.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
+    const navigate = useNavigate();
+
     return (
         <>
             <ProSidebar
@@ -39,7 +41,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
                         }}
                     >
                         <DiReact size={'3em'} color={"00bfff"} />
-                        <span>Phung Huu Tai</span>
+                        <span onClick={() => navigate('/')}>Phung Huu Tai</span>
                     </div>
                 </SidebarHeader>
 
@@ -61,7 +63,10 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
                                 Users management
                                 <Link to="/admins/manage-users" />
                             </MenuItem>
-                            <MenuItem>Quiz management</MenuItem>
+                            <MenuItem>
+                                Quiz management
+                                <Link to="/admins/manage-quizzes" />
+                            </MenuItem>
                             <MenuItem>Question management</MenuItem>
                         </SubMenu>
                     </Menu>
