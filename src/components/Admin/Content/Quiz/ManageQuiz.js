@@ -1,6 +1,9 @@
 import Select from 'react-select';
 import './ManageQuiz.scss';
 import { useState } from 'react';
+import { postCreateNewQuiz } from '../../../../services/apiService';
+import { toast } from 'react-toastify';
+import { isNull } from 'lodash';
 
 const ManageQuiz = () => {
     const options = [
@@ -11,11 +14,30 @@ const ManageQuiz = () => {
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [quizLevel, setQuizLevel] = useState("EASY");
+    const [quizLevel, setQuizLevel] = useState("");
     const [image, setImage] = useState(null);
 
     const handleChangeFile = (event) => {
+        if (event.target && event.target.files && event.target.files[0]) {
+            setImage(event.target.files[0])
+        }
+    }
 
+    const handleSubmitQuiz = async () => {
+        if (!name || !description) {
+            toast.error('Name/Description is required!');
+            return
+        }
+        let res = await postCreateNewQuiz(description, name, quizLevel?.value, image);
+        if (res && res.EC === 0) {
+            toast.success(res.EM);
+            setName("");
+            setDescription("");
+            setQuizLevel("");
+            setImage(null);
+        } else {
+            toast.error(res.EM)
+        }
     }
 
     return (
@@ -49,9 +71,10 @@ const ManageQuiz = () => {
                     </div>
                     <div className='my-3'>
                         <Select
-                            value={quizLevel}
+                            defaultValue={quizLevel}
+                            onChange={setQuizLevel}
                             options={options}
-                            placeholder="Quiz level"
+                            placeholder="Quiz level..."
                         />
                     </div>
                     <div className="more-actions form-group">
@@ -61,6 +84,14 @@ const ManageQuiz = () => {
                             className='form-control'
                             onChange={(event) => handleChangeFile(event)}
                         />
+                    </div>
+                    <div className='mt-3'>
+                        <button
+                            className='btn btn-warning'
+                            onClick={handleSubmitQuiz}
+                        >
+                            Save
+                        </button>
                     </div>
                 </fieldset>
             </div>
