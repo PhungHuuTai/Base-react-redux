@@ -75,6 +75,10 @@ const getAllQuizForAdmin = () => {
     return axios.get('quiz/all');
 }
 
+const deleteQuizForAdmin = (id) => {
+    return axios.delete(`quiz/${id}`);
+}
+
 export { postCreateNewUser, getAllUsers, putUpdateUser, deleteUser,
     getUserWithPaginate, postLogin, postRegister, getQuizByUser, getDataQuiz,
-    postSubmitQuiz, postCreateNewQuiz, getAllQuizForAdmin }
+    postSubmitQuiz, postCreateNewQuiz, getAllQuizForAdmin, deleteQuizForAdmin }

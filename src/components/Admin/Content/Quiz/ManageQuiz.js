@@ -1,7 +1,7 @@
 import Select from 'react-select';
 import './ManageQuiz.scss';
-import { useState } from 'react';
-import { postCreateNewQuiz } from '../../../../services/apiService';
+import { useEffect, useState } from 'react';
+import { getAllQuizForAdmin, postCreateNewQuiz } from '../../../../services/apiService';
 import { toast } from 'react-toastify';
 import TableQuiz from './TableQuiz';
 import { Accordion } from 'react-bootstrap';
@@ -12,11 +12,22 @@ const ManageQuiz = () => {
         { value: "MEDIUM", label: "MEDIUM" },
         { value: "HARD", label: "HARD" }
     ]
-
+    const [listQuiz, setListQuiz] = useState([]);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [quizLevel, setQuizLevel] = useState("");
     const [image, setImage] = useState(null);
+
+    useEffect(() => {
+        fetchAllQuiz();
+    }, [])
+
+    const fetchAllQuiz = async () => {
+        let res = await getAllQuizForAdmin();
+        if (res && res.EC === 0) {
+            setListQuiz(res.DT);
+        }
+    }
 
     const handleChangeFile = (event) => {
         if (event.target && event.target.files && event.target.files[0]) {
@@ -36,6 +47,7 @@ const ManageQuiz = () => {
             setDescription("");
             setQuizLevel("");
             setImage(null);
+            fetchAllQuiz();
         } else {
             toast.error(res.EM)
         }
@@ -100,7 +112,10 @@ const ManageQuiz = () => {
                 </Accordion.Item>
             </Accordion>
             <div className="list-detail">
-                <TableQuiz />
+                <TableQuiz
+                    listQuiz={listQuiz}
+                    fetchAllQuiz={fetchAllQuiz}
+                />
             </div>
         </div>
     )

@@ -1,18 +1,13 @@
-import { useEffect, useState } from "react";
-import { getAllQuizForAdmin } from "../../../../services/apiService";
+import { useState } from 'react';
+import ModalDeleteQuiz from './ModalDeleteQuiz';
 
-const TableQuiz = () => {
-    const [listQuiz, setListQuiz] = useState([]);
+const TableQuiz = ({listQuiz, fetchAllQuiz}) => {
+    const [showDeleteQuiz, setShowDeleteQuiz] = useState(false);
+    const [dataDelete, setDataDelete] = useState({});
 
-    useEffect(() => {
-        fetchAllQuiz();
-    }, [])
-
-    const fetchAllQuiz = async () => {
-        let res = await getAllQuizForAdmin();
-        if (res && res.EC === 0) {
-            setListQuiz(res.DT);
-        }
+    const handleClickBtnDelete = (quiz) => {
+        setShowDeleteQuiz(true);
+        setDataDelete(quiz);
     }
 
     return (
@@ -47,7 +42,7 @@ const TableQuiz = () => {
                                         </button>
                                         <button
                                             className="btn btn-danger"
-                                            // onClick={() => handleClickBtnDelete(item)}
+                                            onClick={() => handleClickBtnDelete(item)}
                                         >
                                             Delete
                                         </button>
@@ -64,6 +59,12 @@ const TableQuiz = () => {
                     }
                 </tbody>
             </table>
+            <ModalDeleteQuiz 
+                show={showDeleteQuiz}
+                setShow={setShowDeleteQuiz}
+                dataDelete={dataDelete}
+                fetchAllQuiz={fetchAllQuiz}
+            />
         </>
     )
 }
