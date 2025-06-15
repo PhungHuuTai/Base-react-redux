@@ -1,9 +1,17 @@
 import { useState } from 'react';
 import ModalDeleteQuiz from './ModalDeleteQuiz';
+import ModalUpdateQuiz from './ModalUpdateQuiz';
 
 const TableQuiz = ({listQuiz, fetchAllQuiz}) => {
     const [showDeleteQuiz, setShowDeleteQuiz] = useState(false);
+    const [showUpdateQuiz, setShowUpdateQuiz] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState({});
     const [dataDelete, setDataDelete] = useState({});
+
+    const handleClickBtnUpdate = (quiz) => {
+        setShowUpdateQuiz(true);
+        setDataUpdate(quiz);
+    }
 
     const handleClickBtnDelete = (quiz) => {
         setShowDeleteQuiz(true);
@@ -36,7 +44,7 @@ const TableQuiz = ({listQuiz, fetchAllQuiz}) => {
                                     <td style={{display: "flex", gap: "15px"}}>
                                         <button
                                             className="btn btn-warning"
-                                            // onClick={() => handleClickBtnUpdate(item)}
+                                            onClick={() => handleClickBtnUpdate(item)}
                                         >
                                             Update
                                         </button>
@@ -63,6 +71,13 @@ const TableQuiz = ({listQuiz, fetchAllQuiz}) => {
                 show={showDeleteQuiz}
                 setShow={setShowDeleteQuiz}
                 dataDelete={dataDelete}
+                fetchAllQuiz={fetchAllQuiz}
+            />
+            <ModalUpdateQuiz 
+                show={showUpdateQuiz}
+                setShow={setShowUpdateQuiz}
+                dataUpdate={dataUpdate}
+                setDataUpdate={setDataUpdate}
                 fetchAllQuiz={fetchAllQuiz}
             />
         </>
