@@ -5,6 +5,7 @@ import { BsFillPatchPlusFill, BsPatchMinusFill } from "react-icons/bs";
 import { RiImageAddFill } from "react-icons/ri";
 import { v4 } from "uuid";
 import _ from "lodash";
+import LightBox from "react-awesome-lightbox";
 
 const Questions = () => {
     const options = [
@@ -30,6 +31,12 @@ const Questions = () => {
             }
         ]
     )
+
+    const [isPreviewImage, setIsPreviewImage] = useState(false);
+    const [dataImagePreview, setDataImagePreview] = useState({
+        title: "",
+        url: ""
+    })
 
     const handleAddRemoveQuestion = (type, id) => {
         if (type === "ADD") {
@@ -115,6 +122,17 @@ const Questions = () => {
         }
     }
 
+    const handlePreviewImage = (qid) => {
+        let index = questions.findIndex(item => item.id === qid);
+        if(index > -1) {
+            setDataImagePreview({
+                title: questions[index].imageName,
+                url: URL.createObjectURL(questions[index].image)
+            });
+            setIsPreviewImage(true);
+        }
+    }
+
     const handleSubmitQuestionForQuiz = () => {
 
     }
@@ -162,7 +180,13 @@ const Questions = () => {
                                             type="file"
                                             hidden
                                         />
-                                        <span>{question.imageName ? question.imageName : "0 file is upload"}</span>
+                                        <span>
+                                            {question.imageName ?
+                                                <span style={{ cursor: "pointer" }} onClick={() => handlePreviewImage(question.id)}>{question.imageName}</span>
+                                                :
+                                                "0 file is upload"
+                                            }
+                                        </span>
                                     </div>
                                     <div className="btn-add">
                                         <span onClick={() => handleAddRemoveQuestion('ADD', '')}>
@@ -210,6 +234,7 @@ const Questions = () => {
                                         )
                                     })
                                 }
+
                             </div>
                         )
                     })
@@ -224,6 +249,13 @@ const Questions = () => {
                             Save Questions
                         </button>
                     </div>
+                }
+                {isPreviewImage &&
+                    <LightBox
+                        image={dataImagePreview.url}
+                        title={dataImagePreview.title}
+                        onClose={() => setIsPreviewImage(false)}
+                    ></LightBox>
                 }
             </div>
         </div>
