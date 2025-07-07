@@ -8,7 +8,7 @@ import {
     SidebarFooter,
     SidebarContent,
 } from 'react-pro-sidebar';
-import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart } from 'react-icons/fa';
+import { FaGem, FaGithub } from 'react-icons/fa';
 import { DiReact } from 'react-icons/di';
 import { MdDashboard } from 'react-icons/md';
 import sidebarBg from '../../assets/image/bg2.jpg';

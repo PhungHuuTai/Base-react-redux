@@ -3,7 +3,6 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FcPlus } from 'react-icons/fc';
 import { toast } from 'react-toastify';
-import Select from 'react-select';
 import _ from 'lodash';
 import { putUpdateQuizForAdmin } from '../../../../services/apiService';
 

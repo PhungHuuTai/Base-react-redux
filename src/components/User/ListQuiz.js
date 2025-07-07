@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getQuizByUser } from "../../services/apiService";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import './ListQuiz.scss';
 
 const ListQuiz = (props) => {
