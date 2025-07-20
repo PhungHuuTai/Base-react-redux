@@ -7,14 +7,16 @@ import { v4 } from "uuid";
 import _ from "lodash";
 import LightBox from "react-awesome-lightbox";
 import { toast } from 'react-toastify';
-import { getAllQuizForAdmin, postCreateNewAnswerForQuestion, postCreateNewQuestionForQuiz, getQuizWithQA } from "../../../../services/apiService";
+import {
+    getAllQuizForAdmin, getQuizWithQA, postUpsertQA
+} from "../../../../services/apiService";
 
 const QuizQA = () => {
     const initQuestions = [
         {
             id: v4(),
             description: "",
-            image: "",
+            imageFile: "",
             imageName: "",
             answers: [
                 {
@@ -89,7 +91,7 @@ const QuizQA = () => {
             const newQuestion = {
                 id: v4(),
                 description: "",
-                image: "",
+                imageFile: "",
                 imageName: "",
                 answers: [
                     {
@@ -142,7 +144,7 @@ const QuizQA = () => {
         let questionsClone = _.cloneDeep(questions);
         let index = questionsClone.findIndex(item => item.id === questionId);
         if (index > -1 && event.target && event.target.files && event.target.files[0]) {
-            questionsClone[index].image = event.target.files[0];
+            questionsClone[index].imageFile = event.target.files[0];
             questionsClone[index].imageName = event.target.files[0].name;
             setQuestions(questionsClone);
         }
@@ -220,21 +222,29 @@ const QuizQA = () => {
             return;
         }
         //submit questions
-        for (const question of questions) {
-            const q = await postCreateNewQuestionForQuiz(
-                +selectedQuiz.value,
-                question.description,
-                question.image
-            );
-            for (const answer of question.answers) {
-                await postCreateNewAnswerForQuestion(
-                    q.DT.id, answer.description, answer.isCorrect
-                )
+        let questionClone = _.cloneDeep(questions);
+        for (let i = 0; i < questionClone.length; i++) {
+            if (questionClone[i].imageFile) {
+                questionClone[i].imageFile = await toBase64(questionClone[i].imageFile)
             }
         }
-        toast.success('Create questions and answers succeed!');
-        setQuestions(initQuestions);
+        
+        let res = await postUpsertQA({
+            quizId: selectedQuiz.value,
+            questions: questionClone
+        });
+        if (res && res.EC === 0) {
+            toast.success(res.EM);
+            fetchQuizWithQA();
+        }
     }
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
 
     return (
         <div className="questions-container">
@@ -261,7 +271,7 @@ const QuizQA = () => {
                                             type="text"
                                             className="form-control"
                                             placeholder='Your question description'
-                                            value={questions.description}
+                                            value={question.description}
                                             onChange={(event) => handleOnChange('QUESTION', question.id, event.target.value)}
                                         />
                                         <label>Question {index + 1}'s Description</label>

@@ -4,11 +4,10 @@ import './Questions.scss';
 import { BsFillPatchPlusFill, BsPatchMinusFill } from "react-icons/bs";
 import { RiImageAddFill } from "react-icons/ri";
 import { v4 } from "uuid";
-import _, { set } from "lodash";
+import _ from "lodash";
 import LightBox from "react-awesome-lightbox";
 import { toast } from 'react-toastify';
 import { getAllQuizForAdmin, postCreateNewAnswerForQuestion, postCreateNewQuestionForQuiz } from "../../../../services/apiService";
-import { queries } from "@testing-library/react";
 
 const Questions = () => {
     const initQuestions = [
@@ -47,7 +46,7 @@ const Questions = () => {
             let newQuiz = res.DT.map(item => {
                 return {
                     value: item.id,
-                    label: `${item.id} - ${item.description}`
+                    label: `${item.id} - ${item.name}`
                 }
             })
             setListQuiz(newQuiz);
@@ -236,7 +235,7 @@ const Questions = () => {
                                             type="text"
                                             className="form-control"
                                             placeholder='Your question description'
-                                            value={questions.description}
+                                            value={question.description}
                                             onChange={(event) => handleOnChange('QUESTION', question.id, event.target.value)}
                                         />
                                         <label>Question {index + 1}'s Description</label>
