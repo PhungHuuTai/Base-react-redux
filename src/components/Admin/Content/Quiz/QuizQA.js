@@ -7,7 +7,7 @@ import { v4 } from "uuid";
 import _ from "lodash";
 import LightBox from "react-awesome-lightbox";
 import { toast } from 'react-toastify';
-import { getAllQuizForAdmin, postCreateNewAnswerForQuestion, postCreateNewQuestionForQuiz } from "../../../../services/apiService";
+import { getAllQuizForAdmin, postCreateNewAnswerForQuestion, postCreateNewQuestionForQuiz, getQuizWithQA } from "../../../../services/apiService";
 
 const QuizQA = () => {
     const initQuestions = [
@@ -38,7 +38,38 @@ const QuizQA = () => {
 
     useEffect(() => {
         fetchAllQuiz();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (selectedQuiz && selectedQuiz.value) {
+            fetchQuizWithQA();
+        }
+    }, [selectedQuiz]);
+
+    const url2File = (url, fileName, mimeType) => {
+        return (fetch(url)
+            .then(function (res) { return res.arrayBuffer(); })
+            .then(function (buf) { return new File([buf], fileName, { type: mimeType }); })
+        );
+    }
+
+    const fetchQuizWithQA = async () => {
+        let res = await getQuizWithQA(selectedQuiz.value);
+        if (res && res.EC === 0) {
+            //convert base64 to fileObject
+            let newQA = [];
+            for (let i = 0; i < res?.DT?.qa.length; i++) {
+                let q = res?.DT?.qa[i]
+                if (q.imageFile) {
+                    q.imageName = `Question-${q.id}.png`;
+                    q.imageFile =
+                        await url2File(`data:image/png;base64, ${q.imageFile}`, `Question-${q.id}.png`, 'image/png');
+                }
+                newQA.push(q);
+            }
+            setQuestions(newQA)
+        }
+    }
 
     const fetchAllQuiz = async () => {
         let res = await getAllQuizForAdmin();
@@ -46,7 +77,7 @@ const QuizQA = () => {
             let newQuiz = res.DT.map(item => {
                 return {
                     value: item.id,
-                    label: `${item.id} - ${item.description}`
+                    label: `${item.id} - ${item.name}`
                 }
             })
             setListQuiz(newQuiz);
@@ -142,7 +173,7 @@ const QuizQA = () => {
         if (index > -1) {
             setDataImagePreview({
                 title: questions[index].imageName,
-                url: URL.createObjectURL(questions[index].image)
+                url: URL.createObjectURL(questions[index].imageFile)
             });
             setIsPreviewImage(true);
         }

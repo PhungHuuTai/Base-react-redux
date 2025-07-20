@@ -46,7 +46,7 @@ const postLogin = (email, password) => {
 }
 
 const postRegister = (email, password, username) => {
-    return axios.post('register', {email, password, username})
+    return axios.post('register', { email, password, username })
 }
 
 const getQuizByUser = () => {
@@ -58,7 +58,7 @@ const getDataQuiz = (quizId) => {
 }
 
 const postSubmitQuiz = (data) => {
-    return axios.post('quiz-submit', {...data})
+    return axios.post('quiz-submit', { ...data })
 }
 
 const postCreateNewQuiz = (description, name, level, image) => {
@@ -95,13 +95,24 @@ const postCreateNewQuestionForQuiz = (quiz_id, description, image) => {
     data.append('description', description);
     data.append('questionImage', image);
     return axios.post('question', data);
-} 
+}
 
 const postCreateNewAnswerForQuestion = (question_id, description, correct_answer) => {
-    return axios.post('answer', {description, correct_answer, question_id});
-} 
+    return axios.post('answer', { description, correct_answer, question_id });
+}
 
-export { postCreateNewUser, getAllUsers, putUpdateUser, deleteUser,
+const postAssignQuiz = (quizId, userId) => {
+    return axios.post('quiz-assign-to-user', { quizId, userId });
+}
+
+const getQuizWithQA = (quizId) => {
+    return axios.get(`quiz-with-qa/${quizId}`);
+}
+
+export {
+    postCreateNewUser, getAllUsers, putUpdateUser, deleteUser,
     getUserWithPaginate, postLogin, postRegister, getQuizByUser, getDataQuiz,
     postSubmitQuiz, postCreateNewQuiz, getAllQuizForAdmin, putUpdateQuizForAdmin,
-    deleteQuizForAdmin, postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion }
+    deleteQuizForAdmin, postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion,
+    postAssignQuiz, getQuizWithQA
+}

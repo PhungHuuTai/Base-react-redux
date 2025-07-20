@@ -49,6 +49,12 @@ body {
       }
     }
   }
+
+  .main-container {
+    .app-content {
+      height: calc(100vh - 68px);
+    }
+  }
   
   .homepage-container {
     .homepage-content {
