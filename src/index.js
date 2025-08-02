@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import Layout from './Layout';
+import i18n from './utils/i18n';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'nprogress/nprogress.css';
 import 'react-perfect-scrollbar/dist/css/styles.css';
